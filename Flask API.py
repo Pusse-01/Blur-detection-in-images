@@ -11,10 +11,11 @@ from skimage.filters import laplace
 from skimage.transform import resize
 import flask
 from flask import Flask,request,jsonify
-import io
-import numpy as np
+import skimage.io              # form 2, load skimage.io module only
+from skimage import io
 from PIL import Image
-import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
 app = Flask(__name__)
 
 @app.route("/predict", methods=["POST"])
@@ -22,11 +23,8 @@ def predict():
     response = {'success': False}
     if flask.request.method == "POST":
         if flask.request.files.get("image"):
-            image = request.files["image"].read()
-            image = Image.open(io.BytesIO(image))
-            image =  image.resize((150,150))
-            image = rgb2gray(image)
-            """
+            file = request.files["image"]
+            image = io.imread(file)
             image = resize(image, (400, 600))
             image = rgb2gray(image)
             edge_laplace = laplace(image, ksize=3)
@@ -41,7 +39,7 @@ def predict():
                 "class": text,
                 "Variance": result
                 }
-            response['success'] = True"""
+            response['success'] = True
     return jsonify(response)
 
 if __name__ == "__main__":

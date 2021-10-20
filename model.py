@@ -15,7 +15,7 @@ from skimage.transform import resize
 
 
 # Load image
-path = "04.jpg"
+path = "Image quality assesment\\05.jpg"
 img = io.imread(path)
 #io.imshow(img) 
 #io.show()
